@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Similarity & Alteration Detector</title>
+    <link rel="stylesheet" href="{{ url_with_timestamp or url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Image Tampering & Similarity Detector</h1>
+            <p>Upload an image to compare it against the original baseline image using Structural Similarity (SSIM).</p>
+        </header>
+
+        <main class="upload-section">
+            <form action="/" method="POST" enctype="multipart/form-data" id="uploadForm">
+                <div class="drop-zone">
+                    <span class="drop-zone__prompt">Drop file here or click to upload</span>
+                    <input type="file" name="file_upload" class="drop-zone__input" accept="image/*" required>
+                </div>
+                <button type="submit" class="btn-submit">Analyze Images</button>
+            </form>
+        </main>
+
+        {% if pred %}
+        <section class="results-section">
+            <div class="score-card">
+                <h2>Similarity Score: <span class="score-value">{{ pred }}</span></h2>
+            </div>
+
+            <h3>Analysis Breakdowns</h3>
+            <div class="image-grid">
+                <div class="image-card">
+                    <h4>Original Image (Compare With)</h4>
+                    <img src="/static/generated/image_original.jpg?t={{ timestamp }}" alt="Original Image Differences">
+                </div>
+                <div class="image-card">
+                    <h4>Uploaded Image</h4>
+                    <img src="/static/generated/image_uploaded.jpg?t={{ timestamp }}" alt="Uploaded Image Differences">
+                </div>
+                <div class="image-card">
+                    <h4>Raw Difference Map</h4>
+                    <img src="/static/generated/image_diff.jpg?t={{ timestamp }}" alt="Difference Map">
+                </div>
+                <div class="image-card">
+                    <h4>Threshold (Otsu Binary)</h4>
+                    <img src="/static/generated/image_thresh.jpg?t={{ timestamp }}" alt="Threshold Map">
+                </div>
+            </div>
+        </section>
+        {% endif %}
+    </div>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
